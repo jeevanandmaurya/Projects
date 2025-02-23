@@ -12,11 +12,10 @@ int x = length / 2, y = width / 2;
 int tempX = 0, tempY = 0;
 int velX = 1, velY = 0;
 
-// Sliders1
+// Sliders
 int s1X = 1, s2X = length, s1Y = width / 2 + 1, s2Y = width / 2 + 1, sWidth = 5;
 int s1VelY = 0, s2VelY = 0;
 // Players
-int score1 = 0, score2 = 0;
 int lives1 = 3, lives2 = 3;
 
 void moveCursor(int x, int y)
@@ -29,31 +28,25 @@ int main()
     // Hide Cursor
     printf("\033[?25l");
 
-    //Starting
+    // Starting
     printf("Starting...");
-    Sleep(2000);
+    Sleep(1500);
 
     system("cls");
 
+    // Printing Boundary
     for (int i = 0; i < length; i++)
-    {
         printf("-");
-    }
 
     for (int i = 0; i < width; i++)
-    {
         printf("\n");
-    }
 
     for (int i = 0; i < length; i++)
-    {
         printf("-");
-    }
 
     while (1)
     {
-
-        // Erasing
+        // Erasing  Ball
         if (tempY)
         {
             moveCursor(tempX, tempY);
@@ -68,8 +61,7 @@ int main()
             y += velY;
         }
 
-        // Printing
-        // printf("\033[%d;%dH", y, x);
+        // Printing Ball
         moveCursor(x, y);
         printf("O");
 
@@ -97,11 +89,8 @@ int main()
 
         // Drawing
         moveCursor(s1X, s1Y - sWidth / 2);
-        // printf("\033[%d;%dH", sY - sWidth / 2, sX);
         for (int i = 0; i < sWidth; i++)
-        {
             printf("|\n");
-        }
 
         // Player 2 Slider
         // Slider Drawing And Moving
@@ -124,27 +113,21 @@ int main()
 
         // Drawing
         moveCursor(s2X, s2Y - sWidth / 2);
-        // printf("\033[%d;%dH", sY - sWidth / 2, sX);
         for (int i = 0; i < sWidth; i++)
-        {
             printf("|\033[1B\033[1D");
-        }
 
         // Ball Collision
         // Horizontal Wall
 
         if (y < 3 || y > width - 1)
-        {
             velY = -velY;
-        }
 
         // Player 1 Slider Collision
         if ((x < s1X + 1) && velX < 0)
         {
             if (y >= s1Y - sWidth / 2 && y <= s1Y + sWidth / 2)
             {
-                // Increase Score
-                score1++;
+
                 velX = -velX;
                 velY += s1VelY;
             }
@@ -165,8 +148,7 @@ int main()
         {
             if (y >= s2Y - sWidth / 2 && y <= s2Y + sWidth / 2)
             {
-                // Increase Score
-                score2++;
+
                 velX = -velX;
                 velY += s2VelY;
             }
@@ -185,87 +167,66 @@ int main()
         // Moving Slider
         // KeyControll
         if (GetAsyncKeyState('W') & 0x8000)
-        {
             s1VelY = -1;
-        }
         else if (GetAsyncKeyState('S') & 0x8000)
-        {
             s1VelY = 1;
-        }
         else
-        {
             s1VelY = 0; // Stop when key is released
-        }
 
         if (GetAsyncKeyState(VK_UP) & 0x8000)
-        {
             s2VelY = -1;
-        }
         else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-        {
             s2VelY = 1;
-        }
         else
-        {
             s2VelY = 0; // Stop when key is released
-        }
 
         // ScoreBoard
         moveCursor(0, width + 2);
         printf("\033[0J");
         printf("Lives: ");
         for (int i = 0; i < lives1; i++)
-        {
-            printf("\033[1;32m * \033[0m");
-        }
+            if (lives1 == 3)
+                printf("\033[1;32m * \033[0m");//Green
+            else if (lives1 == 2)
+                printf("\033[1;33m * \033[0m");//Yellow
+            else
+                printf("\033[1;31m * \033[0m");//Red
+
         // Seperation
         for (int i = 0; i < length - 30; i++)
             printf(" ");
 
+        // Printing Life Stars
         printf("Lives: ");
         for (int i = 0; i < lives2; i++)
-        {
-            printf("\033[1;32m * \033[0m");
-        }
-
-        printf("\nScore: %d", score1);
-        for (int i = 0; i < length - 22; i++)
-            printf(" ");
-        printf("Score: %d", score2);
+            if (lives2 == 3)
+                printf("\033[1;32m * \033[0m");
+            else if (lives2 == 2)
+                printf("\033[1;33m * \033[0m");
+            else
+                printf("\033[1;31m * \033[0m");
 
         Sleep(50);
     }
 
+    // GameOver
     system("cls");
-    printf("GameOver!\nResults:\n");
-    printf("Player 1 Score: %d \nPlayer 2 Score: %d\n", score1, score2);
-    if (score1 > score2)
-    {
-        printf("Winner->Player 1");
-    }
-    else if (score1 < score2)
-    {
-        printf("Winner->Player 2");
-    }
-    else
-    {
-        printf("Draw!");
-    }
+    printf("GameOver!\nResult:\n");
+    (lives1) ? printf("Winner->Player 1") : printf("Winner->Player 2");
 
+    // Restart or Exit
     printf("\n\n Press 'R' to replay and Press Any Other Key to exit: ");
     char c;
     scanf("%c", &c);
-    if (c == 'r')
+    if (c == 'r' || c == 'R')
     {
         // Reset Values
-        score1 = score2 = 0;
         lives1 = lives2 = 3;
         velY = 0;
         // Sliders1
         s1X = 1, s2X = length, s1Y = width / 2 + 1, s2Y = width / 2 + 1, sWidth = 5;
         s1VelY = 0, s2VelY = 0;
         // Players
-        score1 = 0, score2 = 0;
         lives1 = 3, lives2 = 3;
 
         main();

@@ -94,8 +94,8 @@ int main() {
         }
 
         drawWireframeCube(rotatedCube);
-        angleX += 1.0f;
-        angleY += 1.0f;
+        angleX += 0.5f;
+        angleY += 0.5f;
         Sleep(50);
     }
     return 0;

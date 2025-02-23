@@ -39,13 +39,14 @@ void checkWinner(int state[3][3])
         if (state[i][0] == inplay && state[i][0] == state[i][1] && state[i][0] == state[i][2])
         {
             gamestate = 0;
-            //Making it Bold
+           
             printf("%c",ch[inplay]);
         }
         // // Vertical
         if (state[0][i] == inplay && state[0][i] == state[1][i] && state[0][i] == state[2][i])
         {
             gamestate = 0;
+            printf("%c",ch[inplay]);
         }
     }
     // Diagonal
